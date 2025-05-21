@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/darshanshethiya/is-string.git"
+    "url": "git+https://github.com/Pk-Kher/string-utility.git"
   },
   "keywords": [
     "is-string",
@@ -19,9 +19,9 @@
   "author": "pk-kher",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/darshanshethiya/is-string/issues"
+    "url": "https://github.com/Pk-Kher/string-utility/issues"
   },
-  "homepage": "https://github.com/darshanshethiya/is-string#readme",
+  "homepage": "https://github.com/Pk-Kher/string-utility.git#readme",
   "devDependencies": {
     "@types/node": "^22.15.21",
     "typescript": "^5.8.3"
