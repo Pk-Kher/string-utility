@@ -1,6 +1,5 @@
-export const isString = (str: unknown): str is string => {
-    return typeof str === 'string'
-}
+export const isString = (str: unknown): str is string =>
+    typeof str === 'string' || str instanceof String
 
 export const capitalize = (str: string): string =>
     str.charAt(0).toUpperCase() + str.slice(1)
