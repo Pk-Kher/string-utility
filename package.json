@@ -1,0 +1,29 @@
+{
+  "name": "@thirteen-13/string-utility",
+  "version": "1.0.0",
+  "description": "to check if varible contains string value or not",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/darshanshethiya/is-string.git"
+  },
+  "keywords": [
+    "is-string",
+    "check-string",
+    "string"
+  ],
+  "author": "pk-kher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/darshanshethiya/is-string/issues"
+  },
+  "homepage": "https://github.com/darshanshethiya/is-string#readme",
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "typescript": "^5.8.3"
+  }
+}
