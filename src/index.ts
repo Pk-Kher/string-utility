@@ -4,31 +4,44 @@ export const isString = (str: unknown): str is string =>
 export const capitalize = (str: string): string =>
     str.charAt(0).toUpperCase() + str.slice(1)
 
-export const toCamelCase = (str: string): string =>
-    str
-        .replace(/[-_ ]+(\w)/g, (_, c) => c.toUpperCase())
-        .replace(/^./, (c) => c.toLowerCase())
+export const toCamelCase = (str: string): string => {
+    if (/^[a-z][a-zA-Z0-9]*$/.test(str)) return str
+    return str
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]+(\w)/g, (_, c) => c.toUpperCase())
+        .replace(/^[^a-zA-Z0-9]*([a-zA-Z])/, (_, c) => c.toLowerCase())
+
+}
 
 export const toKebabCase = (str: string): string =>
-    str
-        .replace(/([a-z])([A-Z])/g, '$1-$2')
-        .replace(/[\s_]+/g, '-')
-        .toLowerCase()
+    str.trim() // Trim any leading or trailing spaces
+        .replace(/([a-z])([A-Z])/g, '$1-$2') // Add hyphen between lowercase and uppercase letters
+        .replace(/(\d)([a-zA-Z])/g, '$1-$2') // Add hyphen between numbers and letters
+        .replace(/[\s_]+/g, '-') // Replace spaces and underscores with hyphens
+        .toLowerCase(); // Convert all to lowercase
 
 export const toSnakeCase = (str: string): string =>
     str
         .replace(/([a-z])([A-Z])/g, '$1_$2')
+        .replace(/(\d)([a-zA-Z])/g, '$1_$2')
         .replace(/[\s-]+/g, '_')
         .toLowerCase()
 
 export const reverse = (str: string): string =>
     str.split('').reverse().join('')
 
-export const truncate = (str: string, length: number): string =>
-    str.length > length ? str.slice(0, length) + '…' : str
+export const truncate = (str: string, length: number): string => {
+    const graphemes = Array.from(str)
+    return graphemes.length > length ? graphemes.slice(0, length).join('') + '…' : str
+}
 
-export const stripHtml = (str: string): string =>
-    str.replace(/<[^>]*>/g, '')
+export const stripHtml = (str: string): string => {
+    const withoutScriptsAndStyles = str
+        .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '');
+
+    return withoutScriptsAndStyles.replace(/<\/?[a-z][\s\S]*?>/gi, '');
+};
 
 export const escapeHtml = (str: string): string =>
     str.replace(/&/g, '&amp;')
@@ -43,14 +56,19 @@ export const isUpperCase = (str: string): boolean =>
 export const isLowerCase = (str: string): boolean =>
     str === str.toLowerCase()
 
-export const repeat = (str: string, count: number): string =>
-    str.repeat(count)
+export const repeat = (str: string, count: number): string => {
+    return str.repeat(Math.floor(count))
+}
 
-export const padLeft = (str: string, length: number, char = ' '): string =>
-    str.length >= length ? str : char.repeat(length - str.length) + str
+export const padLeft = (str: string, length: number, char = ' '): string => {
+    const fill = Array.from(char);
+    return str.length >= length ? str : fill[0]?.repeat(length - str.length) + str
+}
 
-export const padRight = (str: string, length: number, char = ' '): string =>
-    str.length >= length ? str : str + char.repeat(length - str.length)
+export const padRight = (str: string, length: number, char = ' '): string => {
+    const fill = Array.from(char);
+    return str.length >= length ? str : str + fill[0]?.repeat(length - str.length)
+}
 
 export const contains = (str: string, substr: string): boolean =>
     str.includes(substr)
@@ -70,8 +88,12 @@ export const removeNonNumeric = (str: string): string =>
 export const removeWhitespace = (str: string): string =>
     str.replace(/\s/g, '')
 
-export const countOccurrences = (str: string, sub: string): number =>
-    str.split(sub).length - 1
+export const countOccurrences = (str: string, sub: string): number => {
+    if (sub === "") {
+        return str?.length + 1
+    }
+    return str.split(sub).length - 1
+}
 
 export const slugify = (str: string): string =>
     str
@@ -96,8 +118,8 @@ export const isLoosePalindrome = (str: string): boolean => {
     return cleaned === cleaned.split('').reverse().join('')
 }
 
-export const extractNumbers = (str: string): string[] =>
-    (str.match(/\d+/g) || [])
+export const extractNumbers = (str: string): number[] =>
+    (str.match(/\d+/g) || []).map((value) => parseInt(value))
 
 export const extractWords = (str: string): string[] =>
     str.match(/\b\w+\b/g) || []
@@ -129,15 +151,18 @@ export const extractEmails = (str: string): string[] =>
     str.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || []
 
 export const extractUrls = (str: string): string[] =>
-    str.match(/https?:\/\/[^\s]+/g) || []
+    str.match(/https?:\/\/[^\s]+[a-zA-Z0-9]/g) || []
 
 
-export const titleCase = (str: string): string =>
-    str
-        .toLowerCase()
-        .split(' ')
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+export const titleCase = (str: string): string => {
+    const leadingSpaces = str.match(/^(\s*)/)?.[0] || ''
+    const trailingSpaces = str.match(/(\s*)$/)?.[0] || ''
+    const words = str.trim().split(/\s+/)
+    const titled = words
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
         .join(' ')
+    return leadingSpaces + titled + trailingSpaces
+}
 
 export const swapCase = (str: string): string =>
     str
@@ -148,7 +173,7 @@ export const swapCase = (str: string): string =>
         .join('')
 
 export const removeDuplicateWords = (str: string): string =>
-    Array.from(new Set(str.split(' '))).join(' ')
+    Array.from(new Set(str.split(' ').filter(value => !!value))).join(" ")
 
 export const safeString = (str: string): string =>
     str.replace(/[^\w\s]/gi, '')
@@ -163,28 +188,46 @@ export const charFrequency = (str: string): Record<string, number> =>
     }, {} as Record<string, number>)
 
 export const levenshteinDistance = (a: string, b: string): number => {
-    const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0))
-    for (let i = 0; i <= a.length; i++) dp[i][0] = i
-    for (let j = 0; j <= b.length; j++) dp[0][j] = j
+    const m = a.length
+    const n = b.length
 
-    for (let i = 1; i <= a.length; i++) {
-        for (let j = 1; j <= b.length; j++) {
-            dp[i][j] =
-                a[i - 1] === b[j - 1]
-                    ? dp[i - 1][j - 1]
-                    : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+    if (m === 0) return n
+    if (n === 0) return m
+
+    const dp: number[][] = Array.from({ length: a.length + 1 }, () =>
+        new Array(b.length + 1).fill(0)
+    )
+
+    for (let i = 0; i <= m; i++) dp[i][0] = i
+    for (let j = 0; j <= n; j++) dp[0][j] = j
+
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,    // deletion
+                dp[i][j - 1] + 1,    // insertion
+                dp[i - 1][j - 1] + cost // substitution
+            )
         }
     }
 
-    return dp[a.length][b.length]
+    return dp[m][n]
 }
-// utils/stringUtils2.ts
+
+
 
 export const toPascalCase = (str: string): string =>
-    str.replace(/(\w)(\w*)/g, (_, first, rest) => first.toUpperCase() + rest.toLowerCase()).replace(/\s+/g, '')
+    str
+        .replace(/[^a-zA-Z0-9]+/g, ' ') // turn all non-alphanum into space
+        .trim()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join('')
+
 
 export const toDotCase = (str: string): string =>
-    str.replace(/\s+/g, '.').toLowerCase()
+    str.trim().replace(/\s+/g, '.').toLowerCase()
 
 export const toSpaceCase = (str: string): string =>
     str.replace(/[_-]+/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2')
@@ -195,8 +238,10 @@ export const endsWithAny = (str: string, suffixes: string[]): boolean =>
 export const startsWithAny = (str: string, prefixes: string[]): boolean =>
     prefixes.some(prefix => str.startsWith(prefix))
 
-export const trimChar = (str: string, char: string): string =>
-    str.replace(new RegExp(`^${char}+|${char}+$`, 'g'), '')
+export const trimChar = (str: string, char: string): string => {
+    const escapedChar = char.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return str.replace(new RegExp(`^${escapedChar}+|${escapedChar}+$`, 'g'), '')
+}
 
 export const removeDiacritics = (str: string): string =>
     str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -204,11 +249,17 @@ export const removeDiacritics = (str: string): string =>
 export const getUniqueCharacters = (str: string): string[] =>
     Array.from(new Set(str.split('')))
 
-export const stringToCharCodeArray = (str: string): number[] =>
-    Array.from(str).map(char => char.charCodeAt(0))
+export const stringToCharCodeArray = (str: string): number[] => {
+    const codes: number[] = []
+    for (const char of str) {
+        codes.push(char.codePointAt(0)!)
+    }
+    return codes
+}
 
 export const charCodeArrayToString = (arr: number[]): string =>
-    arr.map(code => String.fromCharCode(code)).join('')
+    arr.map(code => String.fromCodePoint(code)).join('')
+
 
 export const wrap = (str: string, wrapper: string): string =>
     `${wrapper}${str}${wrapper}`
@@ -220,13 +271,13 @@ export const ensureEndsWith = (str: string, suffix: string): string =>
     str.endsWith(suffix) ? str : str + suffix
 
 export const repeatStringUntilLength = (str: string, targetLength: number): string =>
-    str.repeat(Math.ceil(targetLength / str.length)).slice(0, targetLength)
+    str.repeat(Math.ceil(targetLength / (str?.length || 1))).slice(0, targetLength)
 
 export const collapseNewlines = (str: string): string =>
     str.replace(/[\r\n]+/g, '\n')
 
 export const stringToAsciiSum = (str: string): number =>
-    [...str].reduce((sum, char) => sum + char.charCodeAt(0), 0)
+    [...str].reduce((sum, char) => sum + char.codePointAt(0)!, 0)
 
 export const getCharAtSafe = (str: string, index: number): string =>
     str[index] ?? ''
@@ -235,7 +286,7 @@ export const isWhitespace = (str: string): boolean =>
     /^\s*$/.test(str)
 
 export const isEmpty = (str: string): boolean =>
-    str.length === 0
+    str?.length === 0
 
 export const isBlank = (str: string): boolean =>
     str.trim().length === 0
@@ -250,7 +301,8 @@ export const countConsonants = (str: string): number =>
     (str.match(/[bcdfghjklmnpqrstvwxyz]/gi) || []).length
 
 export const stripPunctuation = (str: string): string =>
-    str.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
+    str.replace(/[.!@#$%^&*()\-_=+{}\[\]:;"\/\\,~]/g, '')
+
 
 export const extractHashtags = (str: string): string[] =>
     str.match(/#[\w]+/g) || []
@@ -640,4 +692,3 @@ export const getAllIndexesOf = (str: string, target: string): number[] => {
     }
     return indices
 }
-
