@@ -22,8 +22,6 @@ npm install @thirteen-13/string-utility
 
 ```
 
-# Important Notice
-
 If you encounter any bugs or unexpected behavior in the functions, please report an issue on the project's GitHub repository. Your contributions are invaluable in maintaining the quality and reliability of this codebase.
 
 ## List of Utility Functions and Usage
