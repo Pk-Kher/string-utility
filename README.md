@@ -3402,3 +3402,31 @@ getAllIndexesOf("aaaa", "aa");
 getAllIndexesOf("aaaa", "aa", true);
 // Output: [0, 1, 2]
 ```
+
+# isAnagram
+
+## Description
+
+Checks whether two strings are anagrams of each other, ignoring case and non-alphanumeric characters.
+
+## Parameters
+
+- `str1` (`string`): The first string to compare.
+- `str2` (`string`): The second string to compare.
+
+## Returns
+
+- `boolean`: `true` if the strings are anagrams, otherwise `false`.
+
+## Example
+
+```typescript
+isAnagram("Listen", "Silent");
+// Output: true
+
+isAnagram("Straw Hat", "Hat Straw!");
+// Output: true
+
+isAnagram("Luffy", "Zoro");
+// Output: false
+```

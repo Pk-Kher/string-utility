@@ -86,7 +86,8 @@ import {
     isStrongPassword,
     getLongestWord,
     getShortestWord,
-    getAllIndexesOf, base64Decode, base64Encode, camelToSnake, capitalize, charCodeArrayToString, charFrequency, collapseNewlines, compressWhitespace, contains, containsAny, countConsonants, countOccurrences, countVowels, countWords, endsWith, endsWithAny, ensureEndsWith, ensureStartsWith, escapeHtml, extractEmails, extractHashtags, extractMentions, extractNumbers, extractUrls, extractWords, generateUUID, getCharAtSafe, getFirstNChars, getInitials, getLastNChars, getNthWord, getUniqueCharacters, hasRepeatedCharacters, isAllLowerCase, isAllUpperCase, isAlpha, isAlphanumeric, isBlank, isEmail, isEmpty, isHexColor, isLoosePalindrome, isLowerCase, isRgbColor, isStrictPalindrome, isString, isUpperCase, isUUID, isWhitespace, levenshteinDistance, maskString, obfuscateEmail, padLeft, padRight, percentDecode, percentEncode, randomString, removeDiacritics, removeDuplicateChars, removeDuplicateWords, removeLeadingSlash, removeNonAlpha, removeNonNumeric, removeTrailingSlash, removeWhitespace, repeat, repeatStringUntilLength, repeatWithSeparator, replaceAll, reverse, reverseWords, safeString, slugify, snakeToCamel, splitByLength, startsWith, startsWithAny, stringToAsciiSum, stringToCharCodeArray, stripHtml, stripPunctuation, swapCase, titleCase, toCamelCase, toCharArray, toDotCase, toKebabCase, toPascalCase, toSnakeCase, toSpaceCase, trimChar, trimEnd, trimStart, truncate, truncateWords, wrap
+    getAllIndexesOf, base64Decode, base64Encode, camelToSnake, capitalize, charCodeArrayToString, charFrequency, collapseNewlines, compressWhitespace, contains, containsAny, countConsonants, countOccurrences, countVowels, countWords, endsWith, endsWithAny, ensureEndsWith, ensureStartsWith, escapeHtml, extractEmails, extractHashtags, extractMentions, extractNumbers, extractUrls, extractWords, generateUUID, getCharAtSafe, getFirstNChars, getInitials, getLastNChars, getNthWord, getUniqueCharacters, hasRepeatedCharacters, isAllLowerCase, isAllUpperCase, isAlpha, isAlphanumeric, isBlank, isEmail, isEmpty, isHexColor, isLoosePalindrome, isLowerCase, isRgbColor, isStrictPalindrome, isString, isUpperCase, isUUID, isWhitespace, levenshteinDistance, maskString, obfuscateEmail, padLeft, padRight, percentDecode, percentEncode, randomString, removeDiacritics, removeDuplicateChars, removeDuplicateWords, removeLeadingSlash, removeNonAlpha, removeNonNumeric, removeTrailingSlash, removeWhitespace, repeat, repeatStringUntilLength, repeatWithSeparator, replaceAll, reverse, reverseWords, safeString, slugify, snakeToCamel, splitByLength, startsWith, startsWithAny, stringToAsciiSum, stringToCharCodeArray, stripHtml, stripPunctuation, swapCase, titleCase, toCamelCase, toCharArray, toDotCase, toKebabCase, toPascalCase, toSnakeCase, toSpaceCase, trimChar, trimEnd, trimStart, truncate, truncateWords, wrap,
+    isAnagram
 } from './index'
 
 describe('isString', () => {
@@ -4087,6 +4088,39 @@ describe('getAllIndexesOf', () => {
 });
 
 
+describe('isAnagram', () => {
+    it('returns true for simple anagrams', () => {
+        expect(isAnagram('listen', 'silent')).toBe(true)
+    })
+
+    it('returns false for non-anagrams', () => {
+        expect(isAnagram('hello', 'world')).toBe(false)
+    })
+
+    it('ignores case differences', () => {
+        expect(isAnagram('Listen', 'Silent')).toBe(true)
+    })
+
+    it('ignores spaces and special characters', () => {
+        expect(isAnagram('A decimal point', 'I’m a dot in place')).toBe(true)
+    })
+
+    it('returns true for identical strings', () => {
+        expect(isAnagram('abc123', 'abc123')).toBe(true)
+    })
+
+    it('returns false for strings with different lengths', () => {
+        expect(isAnagram('abc', 'ab')).toBe(false)
+    })
+
+    it('returns true for anagrams with numbers', () => {
+        expect(isAnagram('123abc', 'b1a2c3')).toBe(true)
+    })
+
+    it('returns true for empty strings', () => {
+        expect(isAnagram('', '')).toBe(true)
+    })
+})
 
 
 
