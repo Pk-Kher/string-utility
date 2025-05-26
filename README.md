@@ -360,7 +360,7 @@ isLoosePalindrome("Straw Hat"); // false
 
 ## Description
 
-Extracts all sequences of digits from a string and returns them as an array of strings.
+Extracts all sequences of digits from a string and returns them as an array of numbers.
 
 ## Example
 
@@ -445,20 +445,6 @@ Checks if a string is a valid email format.
 ```typescript
 isEmail("luffy@strawhat.com"); // true
 isEmail("nami@weather"); // false
-```
-
-# isUrlWithFtp
-
-## Description
-
-Checks if a string is a valid URL starting with `http`, `https`, or `ftp`.
-
-## Example
-
-```typescript
-isUrlWithFtp("ftp://sunny.com"); // true
-isUrlWithFtp("https://onepiece.com"); // true
-isUrlWithFtp("mailto:luffy@strawhat.com"); // false
 ```
 
 # extractEmails
@@ -1247,7 +1233,7 @@ obfuscateEmail("luffy@onepiece.com"); // "l***@onepiece.com"
 
 ## Description
 
-Encodes a given string into its Base64 representation using Node.js Buffer.
+Encodes a given string into its Base64 representation using Node.js Buffer. if the input string has multi-byte characters (like Japanese kana or kanji), the result might not be different.
 
 ## Parameters
 
@@ -1267,7 +1253,7 @@ base64Encode("Going Merry"); // "R29pbmcgTWVycnk="
 
 ## Description
 
-Decodes a Base64 encoded string back to its original UTF-8 string using Node.js Buffer.
+Decodes a Base64 encoded string back to its original UTF-8 string using Node.js Buffer. multi-byte characters (like Japanese kana or kanji), the result might not decode correctly depending on where you decode it later.
 
 ## Parameters
 
@@ -2006,22 +1992,29 @@ insertAt("OnePiece", 3, "-"); // "One-Piece"
 
 ## Description
 
-Removes a character from a string at the specified index.
+Removes a specified number of characters from a given string starting at a specific index.
 
 ## Parameters
 
-- `str` (string): The original string.
-- `index` (number): The position of the character to remove.
+- `str` (`string`): The original string.
+- `index` (`number`): The starting index from which characters will be removed.
+- `count` (`number`, optional): The number of characters to remove. Defaults to `1`.
 
 ## Returns
 
-(string): The string with the character at the given index removed.
+- `string`: A new string with the specified characters removed. If the index is invalid or the count is not positive, the original string is returned.
 
 ## Example
 
 ```typescript
-removeAt("Going Merry", 6); // "GoingMerry"
-removeAt("OnePiece", 3); // "Oneiece"
+removeAt("Going Merry", 6, 2);
+// Output: "Going erry"
+
+removeAt("Thousand Sunny", 9);
+// Output: "Thousand Suny"
+
+removeAt("Zoro", 0, 3);
+// Output: "o"
 ```
 
 # reverseSentences
@@ -2154,21 +2147,25 @@ removeQuotes("'One Piece'"); // "One Piece"
 
 ## Description
 
-Wraps a string with double quotes.
+Wraps a given string with the specified type of quotation marks.
 
 ## Parameters
 
-- `str` (string): The string to surround with quotes.
+- `str` (`string`): The string to be wrapped.
+- `quoteType` (`'"' | '\''`, optional): The type of quotation mark to use. Defaults to double quotes (`"`).
 
 ## Returns
 
-(string): The string wrapped in double quotes.
+- `string`: The input string wrapped with the specified quotation marks.
 
 ## Example
 
 ```typescript
-surroundWithQuotes("Going Merry"); // "\"Going Merry\""
-surroundWithQuotes("One Piece"); // "\"One Piece\""
+surroundWithQuotes("Luffy");
+// Output: "\"Luffy\""
+
+surroundWithQuotes("Zoro", "'");
+// Output: "'Zoro'"
 ```
 
 # formatPhoneNumber
@@ -3376,20 +3373,30 @@ getShortestWord("Monkey D. Luffy and the Going Merry");
 
 ## Description
 
-Finds all starting indexes of occurrences of a target substring within a string.
+Returns all starting indexes of a target substring within a given string. Optionally supports overlapping matches.
 
 ## Parameters
 
-- str (string): The string to search in.
-- target (string): The substring to find.
+- `str` (`string`): The string to search within.
+- `target` (`string`): The substring to find.
+- `overlapping` (`boolean`, optional): If `true`, allows overlapping matches. Defaults to `false`.
 
 ## Returns
 
-(number[]): An array of starting indexes where the target substring is found.
+- `number[]`: An array of all starting indexes where the target substring is found.
 
 ## Example
 
 ```typescript
-getAllIndexesOf("Going Merry, Merry weather", "Merry");
-// Output: [6, 13]
+getAllIndexesOf("banana", "ana");
+// Output: [1]
+
+getAllIndexesOf("banana", "ana", true);
+// Output: [1, 3]
+
+getAllIndexesOf("aaaa", "aa");
+// Output: [0, 2]
+
+getAllIndexesOf("aaaa", "aa", true);
+// Output: [0, 1, 2]
 ```
