@@ -3430,3 +3430,31 @@ isAnagram("Straw Hat", "Hat Straw!");
 isAnagram("Luffy", "Zoro");
 // Output: false
 ```
+# toZebraCase
+
+## Description
+
+Transforms a string into "Zebra Case", alternating uppercase and lowercase letters starting with uppercase. Non-alphabetic characters are preserved and do not affect the letter alternation pattern.
+
+## Parameters
+
+- `input` (`string`): The string to transform.
+
+## Returns
+
+- `string`: The zebra-cased version of the input string.
+
+## Example
+
+```typescript
+toZebraCase("luffy");
+// Output: "LuFfY"
+
+toZebraCase("Straw Hat");
+// Output: "StRaW HaT"
+
+toZebraCase("zoro_123!");
+// Output: "ZoRo_123!"
+
+toZebraCase("One Piece");
+// Output: "OnE PiEcE"

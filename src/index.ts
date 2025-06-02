@@ -825,3 +825,20 @@ export const isAnagram = (str1: string, str2: string): boolean => {
         str.toLowerCase().replace(/[^a-z0-9]/g, '').split('').sort().join('')
     return normalize(str1) === normalize(str2)
 }
+export const toZebraCase = (input: string): string => {
+    let index = 0
+    return input
+        .split('')
+        .map((char) => {
+            if (char === ' ') {
+                index = 0
+                return char
+            }
+            if (!/[a-z]/i.test(char)) return char
+            const result = index % 2 === 0 ? char.toUpperCase() : char.toLowerCase()
+            index++
+            return result
+        })
+        .join('')
+}
+

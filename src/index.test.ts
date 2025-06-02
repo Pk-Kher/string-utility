@@ -87,7 +87,8 @@ import {
     getLongestWord,
     getShortestWord,
     getAllIndexesOf, base64Decode, base64Encode, camelToSnake, capitalize, charCodeArrayToString, charFrequency, collapseNewlines, compressWhitespace, contains, containsAny, countConsonants, countOccurrences, countVowels, countWords, endsWith, endsWithAny, ensureEndsWith, ensureStartsWith, escapeHtml, extractEmails, extractHashtags, extractMentions, extractNumbers, extractUrls, extractWords, generateUUID, getCharAtSafe, getFirstNChars, getInitials, getLastNChars, getNthWord, getUniqueCharacters, hasRepeatedCharacters, isAllLowerCase, isAllUpperCase, isAlpha, isAlphanumeric, isBlank, isEmail, isEmpty, isHexColor, isLoosePalindrome, isLowerCase, isRgbColor, isStrictPalindrome, isString, isUpperCase, isUUID, isWhitespace, levenshteinDistance, maskString, obfuscateEmail, padLeft, padRight, percentDecode, percentEncode, randomString, removeDiacritics, removeDuplicateChars, removeDuplicateWords, removeLeadingSlash, removeNonAlpha, removeNonNumeric, removeTrailingSlash, removeWhitespace, repeat, repeatStringUntilLength, repeatWithSeparator, replaceAll, reverse, reverseWords, safeString, slugify, snakeToCamel, splitByLength, startsWith, startsWithAny, stringToAsciiSum, stringToCharCodeArray, stripHtml, stripPunctuation, swapCase, titleCase, toCamelCase, toCharArray, toDotCase, toKebabCase, toPascalCase, toSnakeCase, toSpaceCase, trimChar, trimEnd, trimStart, truncate, truncateWords, wrap,
-    isAnagram
+    isAnagram,
+    toZebraCase
 } from './index'
 
 describe('isString', () => {
@@ -4122,7 +4123,43 @@ describe('isAnagram', () => {
     })
 })
 
+describe('toZebraCase', () => {
+    it('should convert lowercase input to zebra case', () => {
+        expect(toZebraCase('hello')).toBe('HeLlO')
+    })
 
+    it('should convert uppercase input to zebra case', () => {
+        expect(toZebraCase('WORLD')).toBe('WoRlD')
+    })
+
+    it('should handle mixed case input', () => {
+        expect(toZebraCase('HeLLo')).toBe('HeLlO')
+    })
+
+    it('should keep non-letter characters unchanged', () => {
+        expect(toZebraCase('zoro_123!')).toBe('ZoRo_123!')
+    })
+
+    it('should handle empty string', () => {
+        expect(toZebraCase('')).toBe('')
+    })
+
+    it('should treat spaces as non-alphabetic and keep zebra alternation consistent', () => {
+        expect(toZebraCase('one piece')).toBe('OnE PiEcE')
+    })
+
+    it('should handle single character', () => {
+        expect(toZebraCase('l')).toBe('L')
+    })
+
+    it('should handle string with only non-alphabetic characters', () => {
+        expect(toZebraCase('!@#$%^&*()')).toBe('!@#$%^&*()')
+    })
+
+    it('should handle multi-word phrases with punctuation', () => {
+        expect(toZebraCase('monkey d. luffy')).toBe('MoNkEy D. LuFfY')
+    })
+})
 
 
 
